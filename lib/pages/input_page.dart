@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -269,7 +270,41 @@ class _InputPageState extends State<InputPage> {
 
   Future<File?> _compressImage(File file, int quality,
       [int? maxDimension]) async {
-    // Read the image file into a Uint8List.
+    if (Platform.isAndroid || Platform.isIOS) {
+      return await _compressImageMobile(file, quality, maxDimension);
+    } else {
+      return await _compressImageOther(file, quality, maxDimension);
+    }
+  }
+
+  Future<File?> _compressImageMobile(File file, int quality,
+      [int? maxDimension]) async {
+    final directory = await getTemporaryDirectory();
+    final path = directory.path;
+
+    File? result;
+
+    if (maxDimension != null) {
+      result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        '$path/temp_${DateTime.now().millisecondsSinceEpoch}.jpg',
+        quality: quality,
+        minWidth: maxDimension,
+        minHeight: maxDimension,
+      );
+    } else {
+      result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        '$path/temp_${DateTime.now().millisecondsSinceEpoch}.jpg',
+        quality: quality,
+      );
+    }
+
+    return result;
+  }
+
+  Future<File?> _compressImageOther(File file, int quality,
+      [int? maxDimension]) async {
     Uint8List imageBytes = await file.readAsBytes();
     img.Image? originalImage = img.decodeImage(imageBytes);
 
@@ -277,7 +312,6 @@ class _InputPageState extends State<InputPage> {
       return null;
     }
 
-    // If maxDimension is specified and needed, resize the image.
     if (maxDimension != null) {
       int width = originalImage.width;
       int height = originalImage.height;
@@ -453,6 +487,9 @@ class _InputPageState extends State<InputPage> {
       _compressedImages.clear();
       _captionControllers.forEach((controller) => controller.clear());
       _captionControllers.clear();
+      setState(() {
+        _uploadedImageCount = 0;
+      });
     });
   }
 }
