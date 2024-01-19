@@ -414,7 +414,9 @@ class _InputPageState extends State<InputPage> {
     String slug = _generateSlug(_titleController.text, _selectedDate!);
     Map<String, dynamic> uploadObject = _createUploadObject(slug);
 
-    await _uploadJsonObject(uploadObject, slug, awsCredentials);
+    setState(() {
+      _uploadedImageCount = 0;
+    });
 
     for (int i = 0; i < _images.length; i++) {
       await _uploadImage(_compressedImages[i],
@@ -423,6 +425,8 @@ class _InputPageState extends State<InputPage> {
           'photos/public/posts/original/$slug/image$i.jpeg', awsCredentials);
       _incrementUploadedImageCount();
     }
+
+    await _uploadJsonObject(uploadObject, slug, awsCredentials);
 
     for (final image in _images) {
       await image.delete();
