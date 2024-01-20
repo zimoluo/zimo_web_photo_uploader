@@ -48,8 +48,30 @@ class _InputPageState extends State<InputPage> {
 
     return Row(
       children: [
-        Image.file(image, width: 100, height: 100), // Thumbnail
-        const SizedBox(width: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Opacity(
+                opacity: 0.3,
+                child: Image.file(
+                  image,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Image.file(
+                image,
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 14),
         Expanded(
           child: TextField(
             controller: _captionControllers[index],
@@ -58,15 +80,18 @@ class _InputPageState extends State<InputPage> {
         ),
         IconButton(
           icon: const Icon(Icons.arrow_upward),
+          color: const Color.fromARGB(255, 165, 51, 6),
           onPressed: index > 0 ? () => _moveImage(index, -1) : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward),
+          color: const Color.fromARGB(255, 165, 51, 6),
           onPressed:
               index < _images.length - 1 ? () => _moveImage(index, 1) : null,
         ),
         IconButton(
           icon: const Icon(Icons.close),
+          color: const Color.fromARGB(255, 165, 51, 6),
           onPressed: () {
             setState(() {
               _images.removeAt(index);
@@ -92,6 +117,14 @@ class _InputPageState extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _imageEntries = [];
+    for (int i = 0; i < _images.length; i++) {
+      if (i != 0) {
+        _imageEntries.add(const SizedBox(height: 16.0));
+      }
+      _imageEntries.add(_buildImageEntry(_compressedImages[i], i));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -231,7 +264,7 @@ class _InputPageState extends State<InputPage> {
                   const Text('Images',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
@@ -267,16 +300,18 @@ class _InputPageState extends State<InputPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  for (int i = 0; i < _images.length; i++)
-                    _buildImageEntry(_compressedImages[i], i),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
+                  Column(
+                    children: _imageEntries,
+                  ),
+                  const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _isUploadButtonEnabled ? _uploadContent : null,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                     ),
-                    child: const Text('Upload'),
+                    child: const Text('Upload',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 16),
                   LinearProgressIndicator(
