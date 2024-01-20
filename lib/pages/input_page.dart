@@ -93,115 +93,208 @@ class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Upload Photos'),
+      appBar: AppBar(
+        title: const Text(
+          'Upload Photos',
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color.fromRGBO(255, 237, 229, 1),
-                Color.fromRGBO(255, 237, 229, 1),
-                Color.fromRGBO(255, 251, 228, 1),
-                Color.fromRGBO(255, 251, 228, 1),
-              ],
-              stops: [0.0, 0.15, 0.85, 1.0],
-            ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.fromRGBO(255, 237, 229, 1),
+              Color.fromRGBO(255, 237, 229, 1),
+              Color.fromRGBO(255, 251, 228, 1),
+              Color.fromRGBO(255, 251, 228, 1),
+            ],
+            stops: [0.0, 0.15, 0.85, 1.0],
           ),
-          child: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(labelText: 'Title'),
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 16),
+                  const Text('Title of the Entry',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  TextField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter title here',
+                      contentPadding: EdgeInsets.all(12),
                     ),
-                    const SizedBox(height: 8),
-                    GestureDetector(
-                      onTap: () => _selectDate(context),
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            labelText: _selectedDate != null
+                  ),
+                  const SizedBox(height: 16),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Text('Date',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15)),
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () => _selectDate(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 2.0, vertical: 6.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _selectedDate != null
                                 ? DateFormat('yyyy-MM-dd')
                                     .format(_selectedDate!)
-                                : 'Tap to select date',
+                                : '${_isDesktopPlatform() ? 'Click' : 'Tap'} to select date',
+                          ),
+                          const Icon(
+                            Icons.calendar_today,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('Location (Optional)',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  TextField(
+                    controller: _locationNameController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter location name',
+                      contentPadding: EdgeInsets.all(12),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: _latitudeController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter latitude',
+                      contentPadding: EdgeInsets.all(12),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: _longitudeController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter longitude',
+                      contentPadding: EdgeInsets.all(12),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Aspect Ratio',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    value: _aspectRatio,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 2),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        iconColor: const Color.fromARGB(255, 165, 51, 6),
+                        suffixIconColor: const Color.fromARGB(255, 165, 51, 6)),
+                    iconEnabledColor: const Color.fromARGB(255, 165, 51, 6),
+                    dropdownColor: const Color.fromARGB(255, 255, 246, 236),
+                    style: const TextStyle(
+                        fontSize: 14, color: Color.fromARGB(255, 165, 51, 6)),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _aspectRatio = newValue!;
+                      });
+                    },
+                    items: <String>['3:4', '1:1', '16:9']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Images',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: ElevatedButton.icon(
+                            onPressed: _pickImages,
+                            icon: const Icon(Icons.add),
+                            label: const Text('Add Images'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
                           ),
                         ),
                       ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                _images.clear();
+                                _compressedImages.clear();
+                              });
+                            },
+                            icon: const Icon(Icons.delete),
+                            label: const Text('Clear Images'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  for (int i = 0; i < _images.length; i++)
+                    _buildImageEntry(_compressedImages[i], i),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: _isUploadButtonEnabled ? _uploadContent : null,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                     ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _locationNameController,
-                      decoration: const InputDecoration(
-                          labelText: 'Location Name (Optional)'),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _latitudeController,
-                      decoration: const InputDecoration(
-                          labelText: 'Latitude (Optional)'),
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _longitudeController,
-                      decoration: const InputDecoration(
-                          labelText: 'Longitude (Optional)'),
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 8),
-                    DropdownButton<String>(
-                      value: _aspectRatio,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _aspectRatio = newValue!;
-                        });
-                      },
-                      items: <String>['3:4', '1:1', '9:16']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    ElevatedButton(
-                      onPressed: _pickImages,
-                      child: const Text('Add Images'),
-                    ),
-                    ElevatedButton(
-                      child: const Text('Clear Images'),
-                      onPressed: () {
-                        setState(() {
-                          _images.clear();
-                          _compressedImages.clear();
-                        });
-                      },
-                    ),
-                    for (int i = 0; i < _images.length; i++)
-                      _buildImageEntry(_compressedImages[i], i),
-                    ElevatedButton(
-                      onPressed: _isUploadButtonEnabled ? _uploadContent : null,
-                      child: const Text('Upload'),
-                    ),
-                    Text(
-                      'Uploaded Images: $_uploadedImageCount out of ${_images.length}',
-                    ),
-                  ],
-                ),
+                    child: const Text('Upload'),
+                  ),
+                  const SizedBox(height: 16),
+                  LinearProgressIndicator(
+                    value: _uploadedImageCount /
+                        (_images.isEmpty ? 1 : _images.length),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Uploaded Images: $_uploadedImageCount out of ${_images.length}',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<void> _selectDate(BuildContext context) async {

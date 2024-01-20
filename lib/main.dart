@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:zimo_web_photo_uploader/pages/input_page.dart';
 import 'package:zimo_web_photo_uploader/utils/shared_prefs_util.dart';
@@ -18,25 +20,40 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        primaryColor: const Color.fromARGB(255, 165, 51, 6),
+        secondaryHeaderColor: const Color.fromARGB(255, 255, 207, 156),
         appBarTheme: const AppBarTheme(
-          color: Color(0xFFFFEDD5),
-          titleTextStyle: TextStyle(
-            color: Color.fromARGB(255, 165, 51, 6),
-          ),
-        ),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color.fromARGB(255, 165, 51, 6),
-          secondary: const Color.fromARGB(255, 255, 207, 156),
-        ),
+            color: Color(0xFFFFEDD5),
+            titleTextStyle: TextStyle(
+                color: Color.fromARGB(255, 165, 51, 6),
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+            actionsIconTheme: IconThemeData(
+              color: Color.fromARGB(255, 165, 51, 6),
+            ),
+            iconTheme: IconThemeData(
+              color: Color.fromARGB(255, 165, 51, 6),
+            )),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 165, 51, 6)),
         textTheme: GoogleFonts.openSansTextTheme(
           Theme.of(context).textTheme,
         ).copyWith(
           bodyLarge: const TextStyle(color: Color.fromARGB(255, 165, 51, 6)),
           bodyMedium: const TextStyle(color: Color.fromARGB(255, 165, 51, 6)),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 255, 236, 218),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Color.fromARGB(255, 165, 51, 6)),
+          hintStyle:
+              TextStyle(color: Color.fromARGB(255, 185, 108, 25), fontSize: 14),
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 165, 51, 6)),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 165, 51, 6)),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 165, 51, 6)),
           ),
         ),
       ),
@@ -75,6 +92,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return const Center(
+        child: Text(
+          'Web is not supported',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Credential Loader'),
@@ -93,29 +119,44 @@ class _MyHomePageState extends State<MyHomePage> {
             stops: [0.0, 0.15, 0.85, 1.0],
           ),
         ),
-        child: Center(
-          child: _credentialsLoaded
-              ? ElevatedButton(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.2,
+                child: SvgPicture.asset(
+                  'assets/zimo-wall.svg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                width: 260,
+                height: 50,
+                child: ElevatedButton(
                   onPressed: () async {
                     await _checkAndRequestPermission();
                     if (_credentialsLoaded) {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => InputPage()));
+                    } else {
+                      String? path = await pickJsonFile();
+                      if (path != null && await isValidJsonFile(path)) {
+                        await storeFilePath(path);
+                        setState(() => _credentialsLoaded = true);
+                      }
                     }
                   },
-                  child: const Text('Go to Input Page'),
-                )
-              : ElevatedButton(
-                  onPressed: () async {
-                    await _checkAndRequestPermission();
-                    String? path = await pickJsonFile();
-                    if (path != null && await isValidJsonFile(path)) {
-                      await storeFilePath(path);
-                      setState(() => _credentialsLoaded = true);
-                    }
-                  },
-                  child: const Text('Pick JSON File'),
+                  child: Text(
+                    _credentialsLoaded ? 'Go to Input Page' : 'Pick JSON File',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                 ),
+              ),
+            )
+          ],
         ),
       ),
     );
