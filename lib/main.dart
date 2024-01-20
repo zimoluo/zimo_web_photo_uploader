@@ -108,13 +108,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
             colors: [
-              Color.fromRGBO(255, 237, 229, 1),
-              Color.fromRGBO(255, 237, 229, 1),
               Color.fromRGBO(255, 251, 228, 1),
               Color.fromRGBO(255, 251, 228, 1),
+              Color.fromRGBO(255, 237, 229, 1),
+              Color.fromRGBO(255, 237, 229, 1),
             ],
             stops: [0.0, 0.15, 0.85, 1.0],
           ),

@@ -80,17 +80,26 @@ class _InputPageState extends State<InputPage> {
         ),
         IconButton(
           icon: const Icon(Icons.arrow_upward),
+          padding: const EdgeInsets.all(3),
+          constraints: const BoxConstraints(),
+          iconSize: 22,
           color: const Color.fromARGB(255, 165, 51, 6),
           onPressed: index > 0 ? () => _moveImage(index, -1) : null,
         ),
         IconButton(
           icon: const Icon(Icons.arrow_downward),
+          padding: const EdgeInsets.all(3),
+          constraints: const BoxConstraints(),
+          iconSize: 22,
           color: const Color.fromARGB(255, 165, 51, 6),
           onPressed:
               index < _images.length - 1 ? () => _moveImage(index, 1) : null,
         ),
         IconButton(
           icon: const Icon(Icons.close),
+          padding: const EdgeInsets.all(3),
+          constraints: const BoxConstraints(),
+          iconSize: 22,
           color: const Color.fromARGB(255, 165, 51, 6),
           onPressed: () {
             setState(() {
@@ -134,13 +143,13 @@ class _InputPageState extends State<InputPage> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
             colors: [
-              Color.fromRGBO(255, 237, 229, 1),
-              Color.fromRGBO(255, 237, 229, 1),
               Color.fromRGBO(255, 251, 228, 1),
               Color.fromRGBO(255, 251, 228, 1),
+              Color.fromRGBO(255, 237, 229, 1),
+              Color.fromRGBO(255, 237, 229, 1),
             ],
             stops: [0.0, 0.15, 0.85, 1.0],
           ),
