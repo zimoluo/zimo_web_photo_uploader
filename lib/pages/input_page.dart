@@ -465,7 +465,10 @@ class _InputPageState extends State<InputPage> {
 
     return {
       "title": _titleController.text.trim(),
-      "date": DateFormat('yyyy-MM-dd').format(_selectedDate!),
+      "date": DateTime(
+              _selectedDate!.year, _selectedDate!.month, _selectedDate!.day, 8)
+          .toUtc()
+          .toIso8601String(),
       "author": "Zimo",
       "authorProfile":
           "https://zimo-web-bucket.s3.us-east-2.amazonaws.com/photos/public/profiles/zimo.png",
