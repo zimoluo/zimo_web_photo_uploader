@@ -1,0 +1,26 @@
+{
+  "title": "Zimoura",
+  "icon": "../../assets/icon-macos.png",
+  "background": "./dmg-bg.svg",
+  "background-color": "#ffede5",
+  "contents": [
+    { "x": 448, "y": 200, "type": "link", "path": "/Applications" },
+    {
+      "x": 192,
+      "y": 200,
+      "type": "file",
+      "path": "../../build/macos/Build/Products/Release/Zimoura.app"
+    }
+  ],
+  "window": {
+    "size": {
+      "width": 660,
+      "height": 400
+    },
+    "position": {
+      "x": 100,
+      "y": 50
+    }
+  },
+  "filesystem": "APFS"
+}
