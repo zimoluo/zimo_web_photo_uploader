@@ -78,35 +78,45 @@ class _InputPageState extends State<InputPage> {
             decoration: const InputDecoration(labelText: 'Caption'),
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.arrow_upward),
-          padding: const EdgeInsets.all(3),
-          constraints: const BoxConstraints(),
-          iconSize: 22,
-          color: const Color.fromARGB(255, 165, 51, 6),
-          onPressed: index > 0 ? () => _moveImage(index, -1) : null,
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_downward),
-          padding: const EdgeInsets.all(3),
-          constraints: const BoxConstraints(),
-          iconSize: 22,
-          color: const Color.fromARGB(255, 165, 51, 6),
-          onPressed:
-              index < _images.length - 1 ? () => _moveImage(index, 1) : null,
-        ),
-        IconButton(
-          icon: const Icon(Icons.close),
-          padding: const EdgeInsets.all(3),
-          constraints: const BoxConstraints(),
-          iconSize: 22,
-          color: const Color.fromARGB(255, 165, 51, 6),
-          onPressed: () {
-            setState(() {
-              _images.removeAt(index);
-              _compressedImages.removeAt(index);
-            });
-          },
+        Theme(
+          data: Theme.of(context).copyWith(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_upward),
+                padding: const EdgeInsets.all(3),
+                constraints: const BoxConstraints(),
+                iconSize: 22,
+                color: const Color.fromARGB(255, 165, 51, 6),
+                onPressed: index > 0 ? () => _moveImage(index, -1) : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_downward),
+                padding: const EdgeInsets.all(3),
+                constraints: const BoxConstraints(),
+                iconSize: 22,
+                color: const Color.fromARGB(255, 165, 51, 6),
+                onPressed: index < _images.length - 1
+                    ? () => _moveImage(index, 1)
+                    : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                padding: const EdgeInsets.all(3),
+                constraints: const BoxConstraints(),
+                iconSize: 22,
+                color: const Color.fromARGB(255, 165, 51, 6),
+                onPressed: () {
+                  setState(() {
+                    _images.removeAt(index);
+                    _compressedImages.removeAt(index);
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );
