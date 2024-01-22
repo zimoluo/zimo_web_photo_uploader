@@ -495,6 +495,7 @@ class _InputPageState extends State<InputPage> {
 
   String _generateSlug(String title, DateTime date) {
     String slug = title
+        .trim()
         .replaceAll(RegExp('[!?~><\'"`.,]'), '')
         .replaceAll(' ', '-')
         .toLowerCase();
@@ -534,11 +535,11 @@ class _InputPageState extends State<InputPage> {
         "text": texts,
       },
       "location": {
-        "latitude": _latitudeController.text.isNotEmpty
+        "latitude": _latitudeController.text.trim().isNotEmpty
             ? double.parse(_latitudeController.text)
             : 0,
         "name": _locationNameController.text.trim(),
-        "longitude": _longitudeController.text.isNotEmpty
+        "longitude": _longitudeController.text.trim().isNotEmpty
             ? double.parse(_longitudeController.text)
             : 0,
       }
