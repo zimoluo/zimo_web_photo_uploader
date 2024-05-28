@@ -8,7 +8,7 @@
 PRODUCT_NAME = zimo_web_photo_uploader
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.zimoWebPhotoUploader
+PRODUCT_BUNDLE_IDENTIFIER = com.kawarage.zimo_web_photo_uploader
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.kawarage. All rights reserved.
