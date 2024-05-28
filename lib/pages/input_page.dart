@@ -12,6 +12,8 @@ import 'package:zimo_web_photo_uploader/utils/shared_prefs_util.dart';
 import 'package:image/image.dart' as img;
 
 class InputPage extends StatefulWidget {
+  const InputPage({super.key});
+
   @override
   _InputPageState createState() => _InputPageState();
 }
@@ -23,7 +25,7 @@ class _InputPageState extends State<InputPage> {
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
   String _aspectRatio = '3:4';
-  List<TextEditingController> _captionControllers = [];
+  final List<TextEditingController> _captionControllers = [];
   int _uploadedImageCount = 0;
 
   void _incrementUploadedImageCount() {
@@ -36,7 +38,9 @@ class _InputPageState extends State<InputPage> {
   void dispose() {
     // Dispose controllers when the state is disposed
     _titleController.dispose();
-    _captionControllers.forEach((controller) => controller.dispose());
+    for (var controller in _captionControllers) {
+      controller.dispose();
+    }
     // ... [dispose other controllers]
     super.dispose();
   }
@@ -136,12 +140,12 @@ class _InputPageState extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _imageEntries = [];
+    List<Widget> imageEntries = [];
     for (int i = 0; i < _images.length; i++) {
       if (i != 0) {
-        _imageEntries.add(const SizedBox(height: 16.0));
+        imageEntries.add(const SizedBox(height: 16.0));
       }
-      _imageEntries.add(_buildImageEntry(_compressedImages[i], i));
+      imageEntries.add(_buildImageEntry(_compressedImages[i], i));
     }
 
     return Scaffold(
@@ -321,7 +325,7 @@ class _InputPageState extends State<InputPage> {
                   ),
                   const SizedBox(height: 16),
                   Column(
-                    children: _imageEntries,
+                    children: imageEntries,
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
@@ -365,8 +369,8 @@ class _InputPageState extends State<InputPage> {
     }
   }
 
-  List<File> _images = []; // Stores the original images
-  List<File> _compressedImages = []; // Stores the compressed images
+  final List<File> _images = []; // Stores the original images
+  final List<File> _compressedImages = []; // Stores the compressed images
 
   Future<void> _pickImages() async {
     if (kIsWeb || _isDesktopPlatform()) {
@@ -375,10 +379,8 @@ class _InputPageState extends State<InputPage> {
     } else {
       // Use ImagePicker for mobile platforms
       try {
-        final List<XFile>? pickedFiles = await ImagePicker().pickMultiImage();
-        if (pickedFiles != null) {
-          await _processPickedFiles(pickedFiles);
-        }
+        final List<XFile> pickedFiles = await ImagePicker().pickMultiImage();
+        await _processPickedFiles(pickedFiles);
       } catch (e) {
         // Fallback to FilePicker in case of any error
         await _pickFilesFallback();
@@ -480,7 +482,7 @@ class _InputPageState extends State<InputPage> {
     String tempPath = tempDir.path;
 
     String tempFilePath =
-        '${tempPath}/temp_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        '$tempPath/temp_${DateTime.now().millisecondsSinceEpoch}.jpg';
 
     File tempFile = File(tempFilePath);
     await tempFile.writeAsBytes(jpegBytes);
@@ -640,7 +642,9 @@ class _InputPageState extends State<InputPage> {
       // Clearing image lists and their associated caption controllers
       _images.clear();
       _compressedImages.clear();
-      _captionControllers.forEach((controller) => controller.clear());
+      for (var controller in _captionControllers) {
+        controller.clear();
+      }
       _captionControllers.clear();
       setState(() {
         _uploadedImageCount = 0;

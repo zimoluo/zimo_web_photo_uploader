@@ -11,10 +11,12 @@ import 'utils/file_picker_util.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -138,8 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     await _checkAndRequestPermission();
                     if (_credentialsLoaded) {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => InputPage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const InputPage()));
                     } else {
                       String? path = await pickJsonFile();
                       if (path != null && await isValidJsonFile(path)) {
