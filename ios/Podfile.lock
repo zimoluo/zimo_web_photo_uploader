@@ -59,6 +59,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.1.1):
+    - Flutter
   - SDWebImage (5.18.10):
     - SDWebImage/Core (= 5.18.10)
   - SDWebImage/Core (5.18.10)
@@ -76,6 +78,7 @@ DEPENDENCIES:
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 SPEC REPOS:
@@ -99,24 +102,27 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
+  file_picker: 07c75322ede1d47ec9bb4ac82b27c94d3598251a
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_image_compress: 5a5e9aee05b6553048b8df1c3bc456d0afaac433
-  image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
+  flutter_image_compress: 4b058288a81f76e5e80340af37c709abafff34c4
+  image_picker_ios: 85f2b3c9fb98c09d63725c4d12ebd585b56ec35d
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
-  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  path_provider_foundation: 608fcb11be570ce83519b076ab6a1fffe2474f05
+  permission_handler_apple: 3787117e48f80715ff04a3830ca039283d6a4f29
   SDWebImage: fc8f2d48bbfd72ef39d70e981bd24a3f3be53fec
   SDWebImageWebPCoder: 633b813fca24f1de5e076bcd7f720c038b23892b
-  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
+  shared_preferences_foundation: 0b09b969fb36da5551c0bc4a2dbd9d0ff9387478
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2
